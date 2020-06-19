@@ -5,8 +5,11 @@ Simple project, inside main.py there is the function that controls everything el
 it uses ffmpeg for video processing, and some packages
 
 input parameters
+
 > link this tells the program where to download the songs, it have been tested only on soundcloud but the extension owner has a long list with all the supported pages
+
 > names 
+
 > number of songs per video
 
 
