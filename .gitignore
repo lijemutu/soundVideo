@@ -88,3 +88,35 @@ ENV/
 
 # Rope project settings
 .ropeproject
+workingDir/gifs/Around_With_Loops_u_Alexzander82.mp4
+workingDir/gifs/Climbing_The_Zen_Tower_u_jacagu.mp4
+workingDir/gifs/Cube_Walk_u_peachandcake.mp4
+workingDir/gifs/Desktop_Ball_Device_u_the_humeister.mp4
+workingDir/gifs/Everythings_Fine_u_RenceJeager.mp4
+workingDir/gifs/Fibonacci2_u_shapirog.mp4
+workingDir/gifs/gif_info.json
+workingDir/gifs/Hmmmm...this_is_not_the_ocean_that_i_remember_u_SnorlaxFromSpace.mp4
+workingDir/gifs/how_many_cubes_u_PlemBem.mp4
+workingDir/gifs/Impossible_Cube_Wave_u_cmarangu_.mp4
+workingDir/gifs/Impossible_Loop_u_Gurlaldeep.mp4
+workingDir/gifs/Inner_Beauty_u_unishkov.mp4
+workingDir/gifs/Jungle_Run_u_unishkov.mp4
+workingDir/gifs/Minimalistic_Cubes_u_Rubel_NMBoom.mp4
+workingDir/gifs/My_Take_on_a_Ducky_u_flopdood.mp4
+workingDir/gifs/On_And_On_u_HamSandvich_.mp4
+workingDir/gifs/Rotation_u_exsstas.mp4
+workingDir/gifs/Rubiks_Ball_u_tdhooper.mp4
+workingDir/gifs/Sea_The_Whole_Word_u_unishkov.mp4
+workingDir/gifs/Sunflower_Seeds_u_shapirog.mp4
+workingDir/gifs/The_Shaman_u_SnorlaxFromSpace.mp4
+workingDir/gifs/The_Trig_Dream_u_shapirog.mp4
+sample/__init__.py
+sample/audio_video_gif.py
+sample/box.py
+sample/coolvetica compressed rg.ttf
+sample/core.py
+sample/download.py
+sample/every_three_song_ffmpeg.py
+sample/gif_info.py
+sample/helpers.py
+sample/main.py
