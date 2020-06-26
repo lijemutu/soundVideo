@@ -1,16 +1,17 @@
 from __future__ import unicode_literals
-import youtube_dl, json, os, glob,random,shutil
+#import youtube_dl
+import json, os, glob,random,shutil
 
 # S
-def ytExtension(url):
+#def ytExtension(url):
     # DESCARGAR ALL EL CONTENIDO DEL ENLACE, ALMACENAR LA INFORMACION DE CADA CANCION
     # O VIDEO EN UN JSON CON EL MISMO NOMBBRE 
 
-    data = {}
-    data = json.dumps(data)
-    ydl_opts = {"writeinfojson": [data]}
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
+    #data = {}
+    #data = json.dumps(data)
+    #ydl_opts = {"writeinfojson": [data]}
+    #with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+    #    ydl.download([url])
 # S    
 def removeSpaceQuotes():
     # ITERAR PARA CADA CANCION DESCARGADA
@@ -51,7 +52,7 @@ def download_music(url,folder_name,license):
     # MOVERSE A DICHO FOLDER
     os.chdir(folder_name)
     # DESCARGAR CANCIONES/VIDEOS
-    ytExtension(url)
+    #ytExtension(url)
     # REMOVER CARACTERES PARA QUE NO INTERFIERAN EN NINGUN PUNTO 
     removeSpaceQuotes()
     # CHECAR LA LICENCIA DE LOS ARCHIVOS
@@ -70,7 +71,7 @@ def info_songs(song,counter):
              "Artista: "+ data["uploader"] + "\n" ,file=outfile)
 
 # S
-def joinSongs(songSet,counter,songs_prefix):
+def joinSongs(songSet,counter,songs_prefix,jsonInfo):
             # INFORMACION PARA EL FFMPEG      
             # -VN IGNORA VIDEO DEL STREAM
             # -FILTER_COMPLEX FILTRO USADO PARA EL FADE OUT ENTRE CANCIONES
@@ -81,11 +82,13 @@ def joinSongs(songSet,counter,songs_prefix):
             for i in range(len(songSet)-1):
                 if i == len(songSet)-2:
                     inputSongs += f"-i \"{songSet[i]}\" " + f"-i \"{songSet[i+1]}\" "
-                    info_songs(songSet[i],counter)
-                    info_songs(songSet[i+1],counter)
+                    if jsonInfo == 1:
+                        info_songs(songSet[i],counter)
+                        info_songs(songSet[i+1],counter)
                 else:
                     inputSongs += f"-i \"{songSet[i]}\" "
-                    info_songs(songSet[i],counter)
+                    if jsonInfo == 1:
+                        info_songs(songSet[i],counter)
                 
                 
                 if i == 0:
@@ -97,12 +100,12 @@ def joinSongs(songSet,counter,songs_prefix):
 
             cmd = f"ffmpeg {inputSongs} -vn \
             -filter_complex \"{crossFade}\" \
-                            -map [a{len(songSet)-1}] {songs_prefix}{counter}.mp3"
+                            -map \"[a{len(songSet)-1}]\"  {songs_prefix}{counter}.mp3"
 
             os.system(cmd)
 
 # P
-def compact_songs(folder_name,setsNumber,songs_prefix):
+def compact_songs(folder_name,setsNumber,songs_prefix,jsonInfo):
         
     #DIRIGIRNOS AL FOLDER CON LAS CANCIONES
     if os.path.isdir(folder_name) == 0:
@@ -121,7 +124,7 @@ def compact_songs(folder_name,setsNumber,songs_prefix):
     counter = 1
     # ITERAR SOBRES LOS CONJUNTOS DE 3 CANCIONES
     for sets in subList:   
-        joinSongs(sets,counter,songs_prefix)
+        joinSongs(sets,counter,songs_prefix,jsonInfo)
         counter+=1
     os.chdir('..')
 # S
@@ -146,7 +149,7 @@ def gif_video_info(gif_video_folder):
         json.dump(archivo, outfile)
     os.chdir("..")
 # S
-def info_song_video(video,song):
+def info_song_video(video,song,jsonInfo):
     os.chdir("..")
     if os.path.isdir("gifs") == 0:        
         raise ValueError("No folder with songs on that folder name")
@@ -156,12 +159,13 @@ def info_song_video(video,song):
     with open("gif_info.json") as gif_info:
         video_info = json.load(gif_info)
     #print(video_info['archivo'][0])
-    with open(f"info{counter}", "a") as read_it:
-        i = 0
-        for usuario in video_info['usuario']:
-            if video == video_info['archivo'][i]:
-                print(f"Animacion creada por el usuario {usuario}",file=read_it)
-            i+=1
+    if jsonInfo == 1:
+        with open(f"info{counter}", "a") as read_it:
+            i = 0
+            for usuario in video_info['usuario']:
+                if video == video_info['archivo'][i]:
+                    print(f"Animacion creada por el usuario {usuario}",file=read_it)
+                i+=1
     os.chdir("..")
     return usuario
 # S
@@ -174,7 +178,7 @@ def author_box(video,usuario):
     print(cmd)
     os.system(cmd)
 # P
-def video_song_making(folder_name,folder_gif,song_prefix,video_prefix):
+def video_song_making(folder_name,folder_gif,song_prefix,video_prefix,jsonInfo):
 
     if os.path.isdir(folder_name) == 0:
         raise ValueError("No folder with songs on that folder name")
@@ -206,7 +210,7 @@ def video_song_making(folder_name,folder_gif,song_prefix,video_prefix):
             # -C:V COPY NO REALIZA ENCODE DE VIDEO SINO UTILIZA YA EL PREDEFINIFO
             # -C:A LIBMP3LAME  CODEC DE AUDIO -Q:A 4 CALIDAD 4 DEL CODEC DE AUDIO 160KB/S
             # -SHORTEST ACABAR EL VIDEO TAN PRONTO ACABE LA MUSICA
-            usuario = info_song_video(chosen_video,cancion)
+            usuario = info_song_video(chosen_video,cancion,jsonInfo)
             os.chdir(folder_name)
             video_file =  f"{video_prefix}{counter}.mp4"
             cmd = f"ffmpeg -stream_loop -1 -i \"{chosen_video}\" -i \"{cancion}\" \
