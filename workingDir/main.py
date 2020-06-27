@@ -16,8 +16,9 @@ songs_prefix = "musicFree"
 folder_gif = "gifs"
 video_prefix = "musicFreeVideo"
 onlyFolder = 0
+fade = 0
 #download_music(url,folder_name,0)
-compact_songs(folder_name,3,songs_prefix,onlyFolder)
+compact_songs(folder_name,3,songs_prefix,onlyFolder,fade)
 gif_video_info(folder_gif)
 
 fontName = "coolvetica compressed rg.ttf"

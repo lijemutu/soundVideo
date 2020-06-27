@@ -71,7 +71,7 @@ def info_songs(song,counter):
              "Artista: "+ data["uploader"] + "\n" ,file=outfile)
 
 # S
-def joinSongs(songSet,counter,songs_prefix,jsonInfo):
+def joinSongs(songSet,counter,songs_prefix,jsonInfo,crossFadeVar):
             # INFORMACION PARA EL FFMPEG      
             # -VN IGNORA VIDEO DEL STREAM
             # -FILTER_COMPLEX FILTRO USADO PARA EL FADE OUT ENTRE CANCIONES
@@ -97,15 +97,17 @@ def joinSongs(songSet,counter,songs_prefix,jsonInfo):
                     crossFade += f"[a{i}][{i+1}]acrossfade=d=10:c1=tri:c2=tri[a{i+1}]"
                 if i != len(songSet)-2 and i != 0:
                     crossFade += f"[a{i}][{i+1}]acrossfade=d=10:c1=tri:c2=tri[a{i+1}];"
-
-            cmd = f"ffmpeg {inputSongs} -vn \
-            -filter_complex \"{crossFade}\" \
-                            -map \"[a{len(songSet)-1}]\"  {songs_prefix}{counter}.mp3"
+            if crossFadeVar == 1:
+                cmd = f"ffmpeg {inputSongs} -vn \
+                -filter_complex \"{crossFade}\" \
+                                -map \"[a{len(songSet)-1}]\"  {songs_prefix}{counter}.mp3"
+            else:
+                cmd = f"ffmpeg {inputSongs}  {songs_prefix}{counter}.mp3"
 
             os.system(cmd)
 
 # P
-def compact_songs(folder_name,setsNumber,songs_prefix,jsonInfo):
+def compact_songs(folder_name,setsNumber,songs_prefix,jsonInfo,crossFadeVar):
         
     #DIRIGIRNOS AL FOLDER CON LAS CANCIONES
     if os.path.isdir(folder_name) == 0:
@@ -124,7 +126,7 @@ def compact_songs(folder_name,setsNumber,songs_prefix,jsonInfo):
     counter = 1
     # ITERAR SOBRES LOS CONJUNTOS DE 3 CANCIONES
     for sets in subList:   
-        joinSongs(sets,counter,songs_prefix,jsonInfo)
+        joinSongs(sets,counter,songs_prefix,jsonInfo,crossFadeVar)
         counter+=1
     os.chdir('..')
 # S
